@@ -152,5 +152,3 @@ gocomet/
 - Each pipeline run has a unique document_id
 - Full pipeline state is stored for debugging and replay
 - System prioritizes trust over blind automation
-
-Made with Love ❤️ by Arpit.
