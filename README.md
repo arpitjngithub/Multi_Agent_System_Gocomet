@@ -1,8 +1,8 @@
-# GoComet Nova – Multi-Agent Trade Document Pipeline
+# GoComet Nova - Multi-Agent Trade Document Pipeline
 
 ## Overview
 
-This project implements a multi-agent system to automate trade document processing. It extracts structured data from PDFs and images, validates them against rules, and decides the next action — reducing manual effort in global trade workflows.
+This project implements a multi-agent system to automate trade document processing. It extracts structured data from PDFs and images, validates them against rules, and decides the next action - reducing manual effort in global trade workflows.
 
 The system consists of three agents:
 - Extractor Agent – Extracts structured fields using OCR + heuristics / LLM
