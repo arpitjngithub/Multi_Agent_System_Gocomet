@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoComet Nova Trade Pipeline</title>
+    <style>
+      :root {
+        --bg: #f3efe6;
+        --panel: rgba(255, 252, 246, 0.9);
+        --ink: #1e2430;
+        --muted: #606877;
+        --line: rgba(40, 44, 52, 0.12);
+        --green: #157347;
+        --yellow: #c28500;
+        --red: #b3261e;
+        --blue: #0b5cab;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        background:
+          radial-gradient(circle at top left, rgba(11, 92, 171, 0.16), transparent 32%),
+          radial-gradient(circle at top right, rgba(193, 133, 0, 0.16), transparent 26%),
+          linear-gradient(180deg, #f6f1e8, #ece5d8);
+        color: var(--ink);
+        min-height: 100vh;
+      }
+
+      .page {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 28px auto 40px;
+      }
+
+      .hero {
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 22px 60px rgba(35, 37, 40, 0.08);
+      }
+
+      h1, h2 {
+        margin: 0 0 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      p { color: var(--muted); line-height: 1.55; }
+      .row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: var(--panel);
+        padding: 22px;
+        box-shadow: 0 18px 40px rgba(35, 37, 40, 0.06);
+      }
+
+      .controls {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      input[type="file"], input[type="text"] {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.75);
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #17354f, #0b5cab);
+        color: white;
+        padding: 12px 18px;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: linear-gradient(135deg, #735200, #c28500);
+      }
+
+      .status-track {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .status-pill, .badge {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: white;
+        font-size: 14px;
+      }
+
+      .active {
+        background: rgba(11, 92, 171, 0.12);
+        color: var(--blue);
+        border-color: rgba(11, 92, 171, 0.28);
+      }
+
+      .done {
+        background: rgba(21, 115, 71, 0.14);
+        color: var(--green);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 10px 8px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+        font-size: 14px;
+      }
+
+      .confidence-green, .decision-auto_approve { color: var(--green); }
+      .confidence-yellow, .decision-flag_for_human_review { color: var(--yellow); }
+      .confidence-red, .decision-draft_amendment_request { color: var(--red); }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+        padding: 14px;
+        border-radius: 16px;
+        background: rgba(16, 24, 40, 0.04);
+        border: 1px solid var(--line);
+        font-size: 13px;
+      }
+
+      .muted { color: var(--muted); }
+      .hidden { display: none; }
+
+      @media (max-width: 880px) {
+        .row, .grid-2 { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="hero">
+        <h1>GoComet Nova - Trade Document Pipeline</h1>
+        <p>
+          Upload a PDF or image, run the three-agent workflow, inspect confidence by field,
+          and query stored pipeline runs in plain English.
+        </p>
+        <div class="controls">
+          <input id="fileInput" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp" />
+          <button id="runButton">Run Pipeline</button>
+          <button id="sampleButton" class="secondary">Use Sample PDF</button>
+        </div>
+        <div id="statusTrack" class="status-track">
+          <span class="status-pill" data-stage="queued">Queued</span>
+          <span class="status-pill" data-stage="extracting">Extracting</span>
+          <span class="status-pill" data-stage="validating">Validating</span>
+          <span class="status-pill" data-stage="routing">Routing</span>
+          <span class="status-pill" data-stage="done">Done</span>
+        </div>
+      </section>
+
+      <div class="row">
+        <section class="panel">
+          <h2>Pipeline Result</h2>
+          <div id="resultSummary" class="muted">No run yet.</div>
+          <div id="decisionCard" class="hidden"></div>
+          <div class="grid-2">
+            <div>
+              <h2>Extracted Fields</h2>
+              <div id="extractionTable" class="muted">Waiting for a document.</div>
+            </div>
+            <div>
+              <h2>Validation</h2>
+              <div id="validationTable" class="muted">Validation results will appear here.</div>
+            </div>
+          </div>
+          <div style="margin-top: 18px;">
+            <h2>Agent Reasoning</h2>
+            <pre id="reasoningBox">No routing decision yet.</pre>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Natural Language Query</h2>
+          <p>Ask about the stored runs without writing SQL.</p>
+          <input id="queryInput" type="text" placeholder='Try "How many shipments were flagged this week?"' />
+          <div class="controls" style="margin-top: 12px;">
+            <button id="queryButton">Run Query</button>
+          </div>
+          <pre id="queryOutput">No query run yet.</pre>
+        </section>
+      </div>
+    </div>
+    <script src="/assets/app.js"></script>
+  </body>
+  </html>

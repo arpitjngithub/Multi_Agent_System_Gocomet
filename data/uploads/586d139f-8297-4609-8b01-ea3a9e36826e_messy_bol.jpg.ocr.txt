@@ -1,0 +1,12 @@
+BILL OF LADING - LOW QUALITY SCAN
+
+Invoice Number: INV-2024-0042
+Consignee Name: ACME Corp
+HS Code: 
+Port of Loading: Shanghai
+Port of Discharge: Mumbai
+Incoterms: CIF
+Description of Goods: Laptop computers
+Gross Weight: 450 KG
+
+Stamp overlap and blur near HS Code

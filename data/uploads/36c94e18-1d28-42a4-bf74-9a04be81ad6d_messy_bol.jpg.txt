@@ -1,0 +1,10 @@
+Bill of Lading
+
+Invoice No: INV-2024-0099
+Consignee: ACME Imports Pvt Ltd
+HS Code: 8472.10
+POL: Shanghai
+POD: Mumbai
+Trade Terms: CIP
+Description of Goods: Office printers
+Gross Weight: 5200 KG

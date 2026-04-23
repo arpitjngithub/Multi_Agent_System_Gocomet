@@ -1,0 +1,10 @@
+COMMERCIAL INVOICE
+
+Invoice Number: INV-2024-0042
+Consignee Name: ACME Corp
+HS Code: 8471.30
+Port of Loading: Shanghai
+Port of Discharge: Nhava Sheva
+Incoterms: CIF
+Description of Goods: Laptop computers
+Gross Weight: 450 KG

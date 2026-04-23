@@ -1,0 +1,22 @@
+{
+  "customer_id": "CUST_001",
+  "customer_name": "Reliance Industries",
+  "rules": {
+    "incoterms": {
+      "expected": "CIF",
+      "required": true
+    },
+    "port_of_discharge": {
+      "expected": "Nhava Sheva",
+      "required": true
+    },
+    "hs_code": {
+      "expected_prefix": "8471",
+      "required": true
+    },
+    "gross_weight": {
+      "max_kg": 5000,
+      "required": false
+    }
+  }
+}
